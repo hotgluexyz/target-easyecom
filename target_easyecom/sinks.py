@@ -68,7 +68,17 @@ class BuyOrdersSink(EasyecomSink):
                 "POST", endpoint=self.endpoint, request_data=record
             )
             res_json = response.json()
-            id = res_json["_links"]["self"]["href"].split("/")[-1]
+            # old format found in the initial commit for this target. keeping it for backcompatibility
+            links = res_json.get("_links", {}).get("self", {}).get("href", "")
+            if links:
+                id = links.split("/")[-1]
+            else:
+                # new format found
+                id = res_json.get("data", {}).get("poId")
+
+            if not id:
+                raise Exception(f"Response in a different format. response={res_json}")
+
             self.logger.info(f"{self.name} created with id: {id}")
             return id, True, state_updates
         
