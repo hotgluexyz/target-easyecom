@@ -29,8 +29,8 @@ class BuyOrdersSink(EasyecomSink):
             "isCancel": 0,
             "updateTaxRate": 1,
         }
-        if record.get("customer_id"):
-            buy_order["vendorId"] = record.get("customer_id")
+        if record.get("supplier_remoteId"):
+            buy_order["vendorId"] = record.get("supplier_remoteId")
         if record.get("externalid"):
             buy_order["referenceCode"] = record.get("externalid")
         if record.get("billing_address"):
