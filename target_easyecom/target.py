@@ -1,13 +1,11 @@
 """Easyecom target class."""
-
-from singer_sdk.target_base import Target
 from target_hotglue.target import TargetHotglue
 
 from target_easyecom.sinks import (
     BuyOrdersSink,
 )
 
-class TargetEasyecom(Target, TargetHotglue):
+class TargetEasyecom(TargetHotglue):
     """Sample target for Easyecom."""
 
     name = "target-easyecom"
@@ -17,15 +15,6 @@ class TargetEasyecom(Target, TargetHotglue):
     SINK_TYPES = [
         BuyOrdersSink,
     ]
-
-    def __init__(
-        self,
-        config,
-        parse_env_config: bool = False,
-        validate_config: bool = True,
-    ) -> None:
-        self.config_file = config[0]
-        super().__init__(config, parse_env_config, validate_config)
 
     def get_sink_class(self, stream_name: str):
         return next(
