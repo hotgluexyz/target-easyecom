@@ -47,8 +47,8 @@ class BuyOrdersSink(EasyecomSink):
                     line_item["sku"] = item.get("sku")
                 if item.get("quantity"):
                     line_item["quantity"] = item.get("quantity")
-                if item.get("unit_price"):
-                    line_item["unitPrice"] = item.get("unit_price")
+                if "unit_price" in item:
+                    line_item["unitPrice"] = item["unit_price"]
                 if item.get("tax_amount"):
                     line_item["taxValue"] = item.get("tax_amount")
                 if line_item:
