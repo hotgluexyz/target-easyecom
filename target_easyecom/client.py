@@ -43,7 +43,19 @@ class EasyecomSink(HotglueSink, RecordSink):
         return response
     
     def validate_response(self, response: requests.Response) -> None:
-        response.status_code = response.json()['code']
+        try:
+            # easyecom API returns the status code in the response body
+            # use try/except to avoid errors if the response is not a json
+            response.status_code = response.json()['code']
+        except:
+            # just log the status code and text here
+            # the error will be handled by the super class validate_response
+            self.logger.error(
+                "Could not parse response as JSON. "
+                f"Status code: {response.status_code}. "
+                f"Response body: {response.text}"
+            )
+
         return super().validate_response(response)
 
     @property
